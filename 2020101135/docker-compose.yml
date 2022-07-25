@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  backend:    
+    container_name: canteen_backend
+    restart: unless-stopped     
+    image: haasa-app-front:1.1.0
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - shared-network
+    
+
+  frontend:
+    container_name: canteen_frontend
+    restart: unless-stopped
+    image: haasa-app-back:1.1.0
+    build:
+      context: frontend
+      dockerfile: Dockerfile      
+    ports:
+      - "3000:3000"
+    networks:
+      - shared-network
+    depends_on:
+      - backend 
+    stdin_open: true
+    tty: true
+
+  nginx:
+    container_name: canteen-nginx
+    restart: always 
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "6969:80"       
+    expose:
+      - "6969"
+    networks:
+      - shared-network
+    
+
+
+networks:
+  shared-network:
+  
+    
+      
+      
+  
+  
+  
